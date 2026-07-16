@@ -17,7 +17,6 @@ export function Board({ cards, onCardClick }: Props) {
             name={card.name}
             src={card.src}
             isOpened={card.isOpened!}
-            match={card.match!}
             key={idx}
             onCardClick={() => onCardClick(card.id!)}
           />
