@@ -1,0 +1,381 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url("/assets/bg.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 100vh;
+  background-attachment: fixed;
+  margin: 0;
+}
+
+.contaier {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.board {
+  width: 100%;
+  max-width: 850px;
+  padding-top: 200px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 auto;
+  gap: 10px;
+}
+
+/* ===== ОСНОВНЫЕ СТИЛИ КАРТОЧКИ ===== */
+.card {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border: 2px solid #ffffff;
+  border-radius: 28px;
+  perspective: 1000px;
+  position: relative;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  /* Важно! Чтобы внутренние элементы не вылезали */
+  overflow: hidden;
+}
+
+.card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+/* Анимация переворота */
+.card.flipped .card__inner {
+  transform: rotateY(180deg);
+}
+
+/* ===== ОБЕ СТОРОНЫ ===== */
+.card__front,
+.card__back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important; /* Принудительно 100% */
+  height: 100% !important; /* Принудительно 100% */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 26px;
+  overflow: hidden;
+}
+
+/* ===== ЛИЦЕВАЯ СТОРОНА (рубашка) ===== */
+.card__front {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+/* ===== ЗАДНЯЯ СТОРОНА (картинка) ===== */
+.card__back {
+  background: #ffffff;
+  transform: rotateY(180deg);
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  /* Важно! Чтобы картинка не выходила за пределы */
+  overflow: hidden;
+}
+
+/* При перевороте меняем z-index */
+.card.flipped .card__front {
+  z-index: 1;
+}
+
+.card.flipped .card__back {
+  z-index: 2;
+}
+
+/* ===== КАРТИНКА ===== */
+.card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* ===== УЗОР НА РУБАШКЕ ===== */
+.card__pattern {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card__pattern-dots {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 70%
+    );
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.card__pattern-lines {
+  position: absolute;
+  inset: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  transform: rotate(45deg);
+}
+
+.card__pattern-lines::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+}
+
+.card__pattern-lines::after {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  transform: rotate(-45deg);
+}
+
+.card__back-content {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 4rem;
+  font-weight: bold;
+  text-shadow:
+    0 0 30px rgba(102, 126, 234, 0.5),
+    0 0 60px rgba(118, 75, 162, 0.3);
+  z-index: 1;
+  animation: glow 3s ease-in-out infinite;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ===== ЭФФЕКТЫ ===== */
+.card:hover:not(.flipped) {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.card.flipped {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transform: scale(1.02);
+}
+
+/* ===== АНИМАЦИИ ===== */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 30px rgba(102, 126, 234, 0.5),
+      0 0 60px rgba(118, 75, 162, 0.3);
+  }
+  50% {
+    text-shadow:
+      0 0 40px rgba(102, 126, 234, 0.8),
+      0 0 80px rgba(118, 75, 162, 0.5),
+      0 0 120px rgba(102, 126, 234, 0.3);
+  }
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 768px) {
+  .card {
+    border-radius: 20px;
+  }
+
+  .card__front,
+  .card__back {
+    border-radius: 18px;
+  }
+
+  .card__back-content {
+    font-size: 3rem;
+  }
+
+  .card__pattern-lines {
+    inset: 10px;
+  }
+}
+
+@media (max-width: 580px) {
+  .card {
+    border-radius: 10px;
+  }
+
+  .card__front,
+  .card__back {
+    border-radius: 8px;
+  }
+
+  .card__back-content {
+    font-size: 2.5rem;
+  }
+
+  .card__pattern-lines {
+    inset: 6px;
+  }
+
+  .card__pattern-lines::before {
+    inset: 6px;
+  }
+
+  .card__pattern-lines::after {
+    inset: 12px;
+  }
+}
+
+html,
+body {
+  cursor: none; /* Прячем стандартный курсор обязательно */
+}
+
+/* Главный контейнер для сюрикэна */
+.ninja-star-cursor {
+  width: 28px;
+  height: 28px;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  /* Убираем translate отсюда, будем крутить только саму форму внутри */
+  will-change: left, top;
+}
+
+/* Сама звёздочка */
+.ninja-star-shape {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #3a3a3a; /* Стальной цвет */
+  /* Проверенная геометрия четырехконечной звезды */
+  clip-path: polygon(
+    50% 0%,
+    62% 38%,
+    100% 50%,
+    62% 62%,
+    50% 100%,
+    38% 62%,
+    0% 50%,
+    38% 38%
+  );
+  /* Добавим четкие металлические грани */
+  border: 1px solid #555;
+}
+
+/* Вторая часть звезды, повернутая на 45 градусов для получения 8 концов */
+.ninja-star-shape::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #222222; /* Чуть темнее для объема */
+  clip-path: polygon(
+    50% 0%,
+    62% 38%,
+    100% 50%,
+    62% 62%,
+    50% 100%,
+    38% 62%,
+    0% 50%,
+    38% 38%
+  );
+  transform: rotate(45deg);
+}
+
+/* Маленькая аккуратная дырочка по центру */
+.ninja-star-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background-color: #111;
+  border-radius: 50%;
+  /* Центрируем ровно посередине */
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  border: 1px solid #444;
+}
+
+/* Светящийся неоновый след (микс фиолетового и синего) */
+.ninja-trail-spark {
+  width: 8px; /* Чуть увеличили размер для сочности */
+  height: 8px;
+  /* Градиент: из ярко-фиолетового в неоновый синий и в прозрачность */
+  background: radial-gradient(
+    circle,
+    #bd00ff 0%,
+    #00d2ff 60%,
+    rgba(0, 210, 255, 0) 100%
+  );
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  /* Добавим неоновое свечение (glow эффект) */
+  box-shadow:
+    0 0 8px #bd00ff,
+    0 0 12px #00d2ff;
+  animation: sparkFade 0.5s forwards cubic-bezier(0.1, 0.8, 0.3, 1);
+}
+
+@keyframes sparkFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    /* Искры плавно разлетаются и уменьшаются в ноль */
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
