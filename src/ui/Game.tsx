@@ -118,7 +118,16 @@ export function Game() {
   }
 
   function startNewGame() {
-    setCards(initializeGame(initData));
+    const closeAllCards = cards.map((card) => {
+      return { ...card, isOpened: false };
+    });
+    
+    setCards(closeAllCards);
+
+    setTimeout(() => {
+      setCards(initializeGame(initData));
+    }, 500);
+    
     setSelectedCards([]);
     setGamePopup("");
     setLives(defaultLives);
