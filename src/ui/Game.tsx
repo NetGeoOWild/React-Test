@@ -1,71 +1,56 @@
 import { useState } from "react";
 import { Board } from "./Board";
+import { Menu } from "./Menu";
+import { Music } from "./Music";
+import { initializeGame, type Cards } from "../utils/initializeGame";
+import { Popup } from "./Popup";
 
-export type Cards = {
-  id?: number;
-  isOpened?: boolean;
-  match?: boolean;
-  src: string;
-  name: string;
-};
+const baseUrl = import.meta.env.BASE_URL;
 
 const initData = [
   {
     name: "card_1",
-    src: "./assets/card_1.webp",
+    src: `${baseUrl}/assets/card_1.webp`,
   },
   {
     name: "card_2",
-    src: "./assets/card_2.webp",
+    src: `${baseUrl}/assets/card_2.webp`,
   },
   {
     name: "card_3",
-    src: "./assets/card_3.webp",
+    src: `${baseUrl}/assets/card_3.webp`,
   },
   {
     name: "card_4",
-    src: "./assets/card_4.webp",
+    src: `${baseUrl}/assets/card_4.webp`,
   },
   {
     name: "card_5",
-    src: "./assets/card_5.webp",
+    src: `${baseUrl}/assets/card_5.webp`,
   },
   {
     name: "card_6",
-    src: "./assets/card_6.webp",
+    src: `${baseUrl}/assets/card_6.webp`,
   },
   {
     name: "card_7",
-    src: "./assets/card_7.webp",
+    src: `${baseUrl}/assets/card_7.webp`,
   },
   {
     name: "card_8",
-    src: "./assets/card_8.webp",
+    src: `${baseUrl}/assets/card_8.webp`,
   },
 ];
 
+const defaultLives = 10;
+
 export function Game() {
-  function initializeGame(cards: Cards[]) {
-    const rawCards = [...cards, ...cards];
-
-    for (let i = rawCards.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-
-      [rawCards[i], rawCards[j]] = [rawCards[j], rawCards[i]];
-    }
-
-    return rawCards.map((card, index) => {
-      return {
-        ...card,
-        id: index + 1,
-        isOpened: false,
-        match: false,
-      };
-    });
-  }
-
   const [cards, setCards] = useState<Cards[]>(() => initializeGame(initData));
   const [selectedCards, setSelectedCards] = useState<Cards[]>([]);
+  const [isMusic, setIsMusic] = useState(false);
+  const [musicStarted, setMusicStarted] = useState(false);
+  const [lives, setLives] = useState(defaultLives);
+  const [gamePopup, setGamePopup] = useState("start");
 
   function handleCardClick(cardId: number) {
     const clickedCard = cards.find((card) => card.id === cardId);
@@ -74,7 +59,8 @@ export function Game() {
       !clickedCard ||
       clickedCard.isOpened ||
       clickedCard.match ||
-      selectedCards.length >= 2
+      selectedCards.length >= 2 ||
+      lives === 0
     ) {
       return;
     }
@@ -93,15 +79,21 @@ export function Game() {
     } else {
       setSelectedCards([...selectedCards, clickedCard]);
       if (selectedCards[0].name === clickedCard.name) {
-        const matchedCards = newCards.map((card) => {
-          if (card.id === selectedCards[0].id || card.id === clickedCard.id) {
-            return { ...card, match: true };
-          }
-          return card;
-        });
+        setTimeout(() => {
+          const matchedCards = newCards.map((card) => {
+            if (card.id === selectedCards[0].id || card.id === clickedCard.id) {
+              return { ...card, match: true };
+            }
+            return card;
+          });
 
-        setCards(matchedCards);
-        setSelectedCards([]);
+          if (matchedCards.every((card) => card.match)) {
+            setGamePopup("win");
+          }
+
+          setCards(matchedCards);
+          setSelectedCards([]);
+        }, 500);
       } else {
         setTimeout(() => {
           const resetCards = newCards.map((card) => {
@@ -112,12 +104,45 @@ export function Game() {
             return card;
           });
 
+          const loseLive = lives - 1;
           setCards(resetCards);
           setSelectedCards([]);
+          setLives(loseLive);
+
+          if (loseLive === 0) {
+            setGamePopup("lose");
+          }
         }, 1000);
       }
     }
   }
 
-  return <Board cards={cards} onCardClick={handleCardClick} />;
+  function startNewGame() {
+    setCards(initializeGame(initData));
+    setSelectedCards([]);
+    setGamePopup("");
+    setLives(defaultLives);
+  }
+
+  function handlePopup() {
+    if (!musicStarted) {
+      setMusicStarted(true);
+      setIsMusic(true);
+    }
+
+    setGamePopup("");
+  }
+
+  return (
+    <>
+      <Popup popup={gamePopup} onPopup={handlePopup} />
+      <Menu
+        onStartGame={startNewGame}
+        onMusic={() => setIsMusic(!isMusic)}
+        isMusic={isMusic}
+      />
+      <Music isPlaying={isMusic} />
+      <Board cards={cards} lives={lives} onCardClick={handleCardClick} />
+    </>
+  );
 }

@@ -3,12 +3,13 @@ type Props = {
   src: string;
   name: string;
   isOpened: boolean;
+  isMatch: boolean;
   onCardClick: (cardId: number) => void;
 };
-export function Card({ id, src, name, isOpened, onCardClick }: Props) {
+export function Card({ id, src, name, isOpened, isMatch, onCardClick }: Props) {
   return (
     <div
-      className={`card ${isOpened ? "flipped" : " "}`}
+      className={`card ${isOpened ? "flipped" : ""} ${isMatch ? "matched" : ""}`}
       onClick={() => onCardClick(id)}
     >
       <div className="card__inner">
@@ -22,7 +23,7 @@ export function Card({ id, src, name, isOpened, onCardClick }: Props) {
           </div>
         </div>
 
-        <div className="card__back">
+        <div className={`card__back ${isMatch ? "matched" : ""}`}>
           <img className="card__img" src={src} alt={name} />
         </div>
       </div>

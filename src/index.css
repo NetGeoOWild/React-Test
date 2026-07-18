@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+.menu * {
+  cursor: none !important;
+}
+
 body {
   background-image: url("/assets/bg.gif");
   background-size: cover;
@@ -21,10 +25,71 @@ body {
   padding: 0 15px;
 }
 
+.menu {
+  padding-top: 100px;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+.menu__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  border: 4px solid #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.menu__btn {
+  background-color: #0f3460;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  width: 100%;
+  max-width: 300px;
+  padding: 8px 10px;
+  font-size: 18px;
+  border-radius: 15px;
+}
+
+.menu__btn:hover {
+  background-color: #174e92;
+  transition: all 0.3s ease-in;
+}
+
+.game__info {
+  text-align: center;
+  border: 4px solid #ffffff;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.game__info__description {
+  display: block;
+  margin: 0 auto;
+  background-color: #0f3460;
+  color: #ffffff;
+  font-size: 18px;
+  padding: 8px 10px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 15px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
 .board {
   width: 100%;
   max-width: 850px;
-  padding-top: 200px;
+  padding-top: 60px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin: 0 auto;
@@ -44,6 +109,11 @@ body {
     box-shadow 0.3s ease;
   /* Важно! Чтобы внутренние элементы не вылезали */
   overflow: hidden;
+}
+
+.card.matched,
+.card__back.matched {
+  border: 2px solid rgb(3, 194, 3);
 }
 
 .card__inner {
@@ -377,5 +447,150 @@ body {
     opacity: 0;
     /* Искры плавно разлетаются и уменьшаются в ноль */
     transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+/* ----- Оверлей (тёмный фон) ----- */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.35s ease,
+    visibility 0s 0.35s;
+  z-index: 999;
+  padding: 20px;
+}
+
+/* ----- Активное состояние оверлея (попап открыт) ----- */
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.35s ease,
+    visibility 0s 0s;
+}
+
+/* ----- Сам попап (карточка) ----- */
+.popup {
+  max-width: 440px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 36px;
+  padding: 40px 36px 32px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+  transform: scale(0.92) translateY(20px);
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s ease;
+  opacity: 0;
+  text-align: center;
+  position: relative;
+  cursor: none;
+}
+
+/* Анимация при открытии */
+.overlay.active .popup {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* ----- Иконка (эмодзи / декоративный элемент) ----- */
+.popup-icon {
+  font-size: 4.2rem;
+  line-height: 1;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* ----- Заголовок ----- */
+.popup h2 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #0b0f1a;
+  margin-bottom: 12px;
+  letter-spacing: -0.3px;
+}
+
+/* ----- Текст ----- */
+.popup p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #3d4452;
+  margin-bottom: 28px;
+  padding: 0 6px;
+}
+
+/* ----- Кнопки (группа) ----- */
+.popup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.popup-actions button {
+  flex: 1 0 auto;
+  min-width: 100px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 60px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: 0.2s ease;
+  color: #1e2533;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  cursor: none;
+}
+
+.popup-actions .btn-primary {
+  background: #4f46e5;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.3);
+}
+
+.popup-actions .btn-primary:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(79, 70, 229, 0.4);
+}
+
+.popup-actions {
+  background: transparent;
+  color: #4f46e5;
+}
+
+/* ----- Адаптивность (маленькие экраны) ----- */
+@media (max-width: 480px) {
+  .popup {
+    padding: 32px 22px 28px;
+    border-radius: 28px;
+  }
+
+  .popup h2 {
+    font-size: 1.6rem;
+  }
+
+  .popup-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .popup-actions button {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .open-btn {
+    padding: 12px 28px;
+    font-size: 1rem;
   }
 }
