@@ -653,3 +653,10 @@ body {
     font-size: 1rem;
   }
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .ninja-trail-spark,
+  .ninja-star-cursor {
+    display: none;
+  }
+}
