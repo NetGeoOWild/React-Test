@@ -5,9 +5,10 @@ const fullUrl = baseUrl + "/assets/music.mp3";
 
 type Props = {
   isPlaying: boolean;
+  volume: number;
 };
 
-export function Music({ isPlaying }: Props) {
+export function Music({ isPlaying, volume }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -23,6 +24,12 @@ export function Music({ isPlaying }: Props) {
       audio.pause();
     }
   }, [isPlaying]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
+    }
+  }, [volume]);
 
   return <audio ref={audioRef} src={fullUrl} loop preload="auto" />;
 }

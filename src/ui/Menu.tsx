@@ -3,10 +3,18 @@ import { useState } from "react";
 type Props = {
   onStartGame: () => void;
   onMusic: () => void;
+  onVolumeChange: (value: number) => void;
   isMusic: boolean;
+  volume: number;
 };
 
-export function Menu({ onStartGame, onMusic, isMusic }: Props) {
+export function Menu({
+  onStartGame,
+  onMusic,
+  isMusic,
+  volume,
+  onVolumeChange,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -39,6 +47,21 @@ export function Menu({ onStartGame, onMusic, isMusic }: Props) {
           <button className="menu__btn" onClick={onMusic}>
             {isMusic ? "Выключить музыку" : "Включить музыку"}
           </button>
+          <div className="label__group">
+            <span className="label">Громкость музыки</span>
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={volume}
+              onChange={(e) => onVolumeChange(Number(e.target.value))}
+              style={
+                {
+                  "--progress": `${volume}%`,
+                } as React.CSSProperties
+              }
+            />
+          </div>
         </div>
       </div>
 

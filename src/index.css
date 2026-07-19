@@ -119,6 +119,49 @@ body {
   z-index: 998;
 }
 
+.label__group {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #fff;
+  color: #fff;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 200px;
+  height: 6px;
+  border-radius: 999px;
+  outline: none;
+  background: linear-gradient(
+    to right,
+    #23439d 0%,
+    #23439d var(--progress),
+    #d1d5db var(--progress),
+    #d1d5db 100%
+  );
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #23439d;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
 .game {
   width: fit-content;
   margin: 0 auto;
@@ -140,8 +183,8 @@ body {
   background: rgba(255, 255, 255, 0.05);
   padding: 10px 20px;
   border-radius: 15px;
-  border: 2px solid rgba(246, 61, 61, 0.799);
-  color: #ffffff;
+  background-color: #ffffffa8;
+  color: #000000;
 }
 
 .heart {
@@ -573,8 +616,6 @@ body {
 
 /* ----- Иконка (эмодзи / декоративный элемент) ----- */
 .popup-icon {
-  font-size: 4.2rem;
-  line-height: 1;
   margin-bottom: 12px;
   display: block;
 }

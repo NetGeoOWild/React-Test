@@ -49,6 +49,7 @@ export function Game() {
   const [selectedCards, setSelectedCards] = useState<Cards[]>([]);
   const [isMusic, setIsMusic] = useState(false);
   const [musicStarted, setMusicStarted] = useState(false);
+  const [volume, setVolume] = useState(75);
   const [lives, setLives] = useState(defaultLives);
   const [gamePopup, setGamePopup] = useState("start");
 
@@ -95,7 +96,6 @@ export function Game() {
           setCards(matchedCards);
           setSelectedCards([]);
           setLives(addLive);
-
         }, 500);
       } else {
         setTimeout(() => {
@@ -124,13 +124,13 @@ export function Game() {
     const closeAllCards = cards.map((card) => {
       return { ...card, isOpened: false };
     });
-    
+
     setCards(closeAllCards);
 
     setTimeout(() => {
       setCards(initializeGame(initData));
     }, 500);
-    
+
     setSelectedCards([]);
     setGamePopup("");
     setLives(defaultLives);
@@ -152,8 +152,10 @@ export function Game() {
         onStartGame={startNewGame}
         onMusic={() => setIsMusic(!isMusic)}
         isMusic={isMusic}
+        volume={volume}
+        onVolumeChange={setVolume}
       />
-      <Music isPlaying={isMusic} />
+      <Music isPlaying={isMusic} volume={volume}  />
       <Board cards={cards} lives={lives} onCardClick={handleCardClick} />
     </>
   );
