@@ -9,7 +9,7 @@ type Props = {
 
 export function Board({ cards, lives, onCardClick }: Props) {
   return (
-    <div>
+    <div className="game">
       <div className="game__info">
         <div className="game__info__container">
           <div className="game__info__lives-hearts">

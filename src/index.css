@@ -2,13 +2,13 @@
 *::after,
 *::before {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.menu * {
-  cursor: none !important;
-  font-family: "Press Start 2P", system-ui;
-  font-weight: 400;
-  font-style: normal;
+:root {
+  --header-height: 120px;
+  --board-gap: 8px;
 }
 
 body {
@@ -41,8 +41,8 @@ body {
   gap: 5px;
   background: none;
   border: none;
-  cursor: pointer;
   padding: 5px;
+  cursor: none;
 }
 
 .burger-line {
@@ -50,6 +50,13 @@ body {
   height: 3px;
   background-color: #fff;
   transition: all 0.3s ease;
+}
+
+.menu * {
+  cursor: none !important;
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* Само меню */
@@ -85,7 +92,6 @@ body {
   border: none;
   color: #fff;
   font-size: 24px;
-  cursor: pointer;
 }
 
 .menu__btn {
@@ -113,14 +119,19 @@ body {
   z-index: 998;
 }
 
-.game__info {
-  padding-top: 70px;
-  width: 100%;
-  max-width: 830px;
+.game {
+  width: fit-content;
   margin: 0 auto;
 }
 
+.game__info {
+  width: 100%;
+  padding-top: 70px;
+  margin-bottom: 20px;
+}
+
 .game__info__lives-hearts {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,20 +155,19 @@ body {
 }
 
 .board {
-  width: 100%;
-  max-width: 850px;
-  padding-top: 40px;
-  padding-bottom: 40px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin: 0 auto;
-  gap: 10px;
+  gap: var(--board-gap);
+  width: fit-content;
 }
 
 /* ===== ОСНОВНЫЕ СТИЛИ КАРТОЧКИ ===== */
 .card {
-  width: 100%;
-  aspect-ratio: 1/1;
+  width: min(
+    calc((100vw - 80px) / 4),
+    calc((100vh - var(--header-height) - 3 * var(--board-gap) - 40px) / 4)
+  );
+  aspect-ratio: 1;
   border: 2px solid #ffffff;
   border-radius: 28px;
   perspective: 1000px;

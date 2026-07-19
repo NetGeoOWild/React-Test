@@ -13,6 +13,11 @@ export function Menu({ onStartGame, onMusic, isMusic }: Props) {
     setIsOpen(!isOpen);
   };
 
+  const handleStartGame = () => {
+    setIsOpen(!isOpen);
+    onStartGame();
+  };
+
   return (
     <>
       {!isOpen && (
@@ -28,7 +33,7 @@ export function Menu({ onStartGame, onMusic, isMusic }: Props) {
           <button className="menu__close-btn" onClick={toggleMenu}>
             ✕
           </button>
-          <button className="menu__btn" onClick={onStartGame}>
+          <button className="menu__btn" onClick={handleStartGame}>
             НАЧАТЬ НОВУЮ ИГРУ
           </button>
           <button className="menu__btn" onClick={onMusic}>
