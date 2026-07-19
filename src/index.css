@@ -6,14 +6,22 @@
 
 .menu * {
   cursor: none !important;
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 
 body {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
   background-image: url("/assets/bg.gif");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   margin: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .contaier {
@@ -23,72 +31,123 @@ body {
   padding: 0 15px;
 }
 
+.burger-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.burger-line {
+  width: 30px;
+  height: 3px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Само меню */
 .menu {
-  padding-top: 100px;
-  width: 100%;
-  max-width: 850px;
-  margin: 0 auto;
-  margin-bottom: 50px;
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100vh;
+  background: #1a1a2e;
+  transition: left 0.3s ease;
+  z-index: 999;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.menu--open {
+  left: 0;
 }
 
 .menu__container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  border: 4px solid #ffffff;
-  border-radius: 10px;
-  padding: 15px;
+  padding: 60px 20px 20px;
+  gap: 20px;
+  height: 100%;
+}
+
+.menu__close-btn {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
 }
 
 .menu__btn {
-  background-color: #0f3460;
-  color: #ffffff;
-  font-weight: bold;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #fff;
+  color: #fff;
+  font-size: 13px;
+  transition: all 0.3s ease;
   text-transform: uppercase;
-  border: none;
-  width: 100%;
-  max-width: 300px;
-  padding: 8px 10px;
-  font-size: 18px;
-  border-radius: 15px;
 }
 
 .menu__btn:hover {
-  background-color: #174e92;
-  transition: all 0.3s ease-in;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Затемнение фона */
+.menu__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
 }
 
 .game__info {
-  text-align: center;
-  border: 4px solid #ffffff;
+  padding-top: 70px;
   width: 100%;
-  max-width: 850px;
+  max-width: 830px;
   margin: 0 auto;
-  border-radius: 10px;
-  padding: 15px;
 }
 
-.game__info__description {
-  display: block;
-  margin: 0 auto;
-  background-color: #0f3460;
-  color: #ffffff;
-  font-size: 18px;
-  padding: 8px 10px;
-  width: 100%;
-  max-width: 300px;
+.game__info__lives-hearts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 20px;
   border-radius: 15px;
-  text-transform: uppercase;
-  font-weight: bold;
+  border: 2px solid rgba(246, 61, 61, 0.799);
+  color: #ffffff;
+}
+
+.heart {
+  font-size: 28px;
+  transition: all 0.3s ease;
+}
+
+.heart.lost {
+  opacity: 0.2;
+  transform: scale(0.8);
 }
 
 .board {
   width: 100%;
   max-width: 850px;
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin: 0 auto;
@@ -465,7 +524,7 @@ body {
   transition:
     opacity 0.35s ease,
     visibility 0s 0.35s;
-  z-index: 999;
+  z-index: 1001;
   padding: 20px;
 }
 
@@ -512,17 +571,18 @@ body {
 
 /* ----- Заголовок ----- */
 .popup h2 {
-  font-size: 1.9rem;
+  font-size: 22px;
   font-weight: 700;
   color: #0b0f1a;
   margin-bottom: 12px;
   letter-spacing: -0.3px;
+  line-height: 33px;
 }
 
 /* ----- Текст ----- */
 .popup p {
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 24px;
   color: #3d4452;
   margin-bottom: 28px;
   padding: 0 6px;

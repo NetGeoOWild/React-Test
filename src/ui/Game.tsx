@@ -42,7 +42,7 @@ const initData = [
   },
 ];
 
-const defaultLives = 10;
+const defaultLives = 6;
 
 export function Game() {
   const [cards, setCards] = useState<Cards[]>(() => initializeGame(initData));
@@ -91,8 +91,11 @@ export function Game() {
             setGamePopup("win");
           }
 
+          const addLive = lives + 1;
           setCards(matchedCards);
           setSelectedCards([]);
+          setLives(addLive);
+
         }, 500);
       } else {
         setTimeout(() => {

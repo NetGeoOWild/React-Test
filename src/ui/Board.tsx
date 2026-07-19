@@ -12,9 +12,13 @@ export function Board({ cards, lives, onCardClick }: Props) {
     <div>
       <div className="game__info">
         <div className="game__info__container">
-          <span className="game__info__description">
-            Количество попыток: {lives}
-          </span>
+          <div className="game__info__lives-hearts">
+            {lives > 0 ? Array.from({ length: lives }).map((_, i) => (
+              <span key={i} className={`heart ${i >= lives ? "lost" : ""}`}>
+                ❤️
+              </span>
+            )) : "ПОПЫТОК БОЛЬШЕ НЕТ"}
+          </div>
         </div>
       </div>
       <div className="board">

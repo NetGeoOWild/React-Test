@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 type Props = {
   onStartGame: () => void;
   onMusic: () => void;
@@ -5,16 +7,37 @@ type Props = {
 };
 
 export function Menu({ onStartGame, onMusic, isMusic }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="menu">
-      <div className="menu__container">
-        <button className="menu__btn" onClick={onStartGame}>
-          НАЧАТЬ НОВУЮ ИГРУ
+    <>
+      {!isOpen && (
+        <button className="burger-btn" onClick={toggleMenu}>
+          <span className="burger-line"></span>
+          <span className="burger-line"></span>
+          <span className="burger-line"></span>
         </button>
-        <button className="menu__btn" onClick={onMusic}>
-          {isMusic ? "Выключить музыку" : "Включить музыку"}
-        </button>
+      )}
+
+      <div className={`menu ${isOpen ? "menu--open" : ""}`}>
+        <div className="menu__container">
+          <button className="menu__close-btn" onClick={toggleMenu}>
+            ✕
+          </button>
+          <button className="menu__btn" onClick={onStartGame}>
+            НАЧАТЬ НОВУЮ ИГРУ
+          </button>
+          <button className="menu__btn" onClick={onMusic}>
+            {isMusic ? "Выключить музыку" : "Включить музыку"}
+          </button>
+        </div>
       </div>
-    </div>
+
+      {isOpen && <div className="menu__overlay" onClick={toggleMenu}></div>}
+    </>
   );
 }
